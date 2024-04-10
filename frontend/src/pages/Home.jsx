@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../api";
+import Note from "../components/Note";
 
 function Home() {
     const [notes, setNotes] = useState([]);
@@ -18,7 +19,68 @@ function Home() {
             .catch((err) => alert(err));
     };
 
-    return <div>Home</div>
+    const deleteNote = (id) => {
+        api
+            .delete(`/api/notes/delete/${id}/`)
+            .then((res) => {
+                if (res.status === 204) alert("Note deleted!");
+                else alert("Failed to delete note.");
+                getNotes();
+            })
+            .catch((err) => alert(err));
+    };
+
+    const createNote = (e) => {
+        e.preventDefault();
+        api
+            .post("/api/notes/", {
+                content: content,
+                title: title
+            })
+            .then((res) => {
+                if (res.status === 201) alert("Note created!");
+                else alert("Failed to make note.");
+                getNotes();
+            })
+            .catch((err) => alert(err));
+    };
+
+    return <div>
+        <div>
+            <h2>Notes</h2>
+            {notes.map((note) => (
+                <Note
+                    key={note.id}
+                    note={note}
+                    onDelete={deleteNote}
+                />
+            ))}
+        </div>
+        <h2>Create note</h2>
+        <form onSubmit={createNote}>
+            <label htmlFor="title">Title:</label>
+            <br />
+            <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+            />
+            <label htmlFor="content">Content:</label>
+            <br />
+            <textarea
+                id="content"
+                name="content"
+                required
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+            />
+            <br />
+            <input type="submit" value="Create Note" />
+        </form>
+    </div>
 }
 
 export default Home
