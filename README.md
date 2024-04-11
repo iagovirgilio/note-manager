@@ -25,7 +25,7 @@ Este projeto é uma aplicação web desenvolvida com Django no backend e React n
     ```
 6. Execute o servidor frontend:
     ```
-    npm start
+    npm run dev
     ```
 
 ## Contribuição
