@@ -3,22 +3,22 @@
     margin: 20px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-  }
-  
-  .note-title {
+}
+
+.note-title {
     color: #333;
-  }
-  
-  .note-content {
+}
+
+.note-content {
     color: #666;
-  }
-  
-  .note-date {
+}
+
+.note-date {
     color: #999;
     font-size: 0.8rem;
-  }
-  
-  .delete-button {
+}
+
+.delete-button {
     background-color: #f44336; /* Red */
     color: white;
     border: none;
@@ -26,8 +26,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .delete-button:hover {
+}
+
+.delete-button:hover {
     background-color: #d32f2f; /* Darker red */
-  }
+}
