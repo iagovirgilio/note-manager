@@ -3,7 +3,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "./constants";
 
 export const login = async (username, password) => {
     try {
-        const res = await api.post("/login", { username, password });
+        const res = await api.post("/api/token/", { username, password });
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
     } catch (error) {
@@ -13,7 +13,7 @@ export const login = async (username, password) => {
 
 export const register = async (username, password) => {
     try {
-        await api.post("/register", { username, password });
+        await api.post("/api/user/register/", { username, password });
     } catch (error) {
         throw new Error("Failed to register. Please try again later.");
     }
