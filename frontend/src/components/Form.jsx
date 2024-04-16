@@ -1,44 +1,42 @@
+// Form.jsx
+
 import { useState } from "react";
-import api from "../api";
 import { useNavigate } from "react-router-dom";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { login, register } from "../auth";
 import "../styles/Form.css";
 import LoadingIndicator from "./LoadingIndicator";
 
-function Form({route, method}) {
+function Form({ method }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
-    const name = method === "login" ? "Login" : "Register";
+    const formName = method === "login" ? "Login" : "Register";
 
     const handleSubmit = async (e) => {
-        setLoading(true);
         e.preventDefault();
+        setIsLoading(true);
 
         try {
-            const res = await api.post(route, {
-                username,
-                password
-            });
             if (method === "login") {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                await login(username, password);
                 navigate("/");
             } else {
+                await register(username, password);
                 navigate("/login");
             }
         } catch (error) {
-            alert(error)
+            console.error("Authentication error:", error);
+            // Trate o erro de forma mais robusta aqui, como exibindo uma mensagem de erro na UI
         } finally {
-            setLoading(false)
+            setIsLoading(false);
         }
     }
 
     return (
         <form onSubmit={handleSubmit} className="form-container">
-            <h1>{name}</h1>
+            <h1>{formName}</h1>
             <input 
                 className="form-input"
                 type="text"
@@ -51,12 +49,12 @@ function Form({route, method}) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="password"
+                placeholder="Password"
             />
-            {loading && <LoadingIndicator />}
-            <button className="form-button" type="submit">{name}</button>
+            {isLoading && <LoadingIndicator />}
+            <button className="form-button" type="submit">{formName}</button>
         </form>
     )
 }
 
-export default Form
+export default Form;
